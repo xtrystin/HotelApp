@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron">
+    @if(User?.Identity?.IsAuthenticated ?? false) 
+    { 
+        <h1>Welcome, @User.Identity.Name</h1>
+
+        <a class="btn btn-lg btn-danger" href="/logout">Sign out</a>
+    }
+    else
+    {
+        <h1>Welcome, please sign in to continue</h1>
+        <a class="btn btn-lg btn-success" href="/login">Sign in</a>
+    }
+</div>
+
+<!-- Test Api -->
+<a class="btn btn-lg btn-danger" href="/privacy">Privacy (testing api)</a>
