@@ -1,10 +1,13 @@
 using AspNet.Security.OpenIdConnect.Primitives;
+using HAApi.Library.Context;
+using HAApi.Library.DataAccess;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +35,15 @@ namespace HAApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<EFContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("HAData"));
+            });
+
+            // Personal Services
+            services.AddTransient<IRoomData, RoomData>();
+
+
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
             //Add authentication and set default authentication scheme
