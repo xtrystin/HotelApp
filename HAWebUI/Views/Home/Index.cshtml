@@ -3,8 +3,8 @@
 }
 
 <div class="jumbotron">
-    @if(User?.Identity?.IsAuthenticated ?? false) 
-    { 
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
         <h1>Welcome, @User.Identity.Name</h1>
 
         <a class="btn btn-lg btn-danger" href="/logout">Sign out</a>
@@ -16,6 +16,9 @@
     }
 </div>
 
-<!-- Test Api -->
-<a class="btn btn-lg btn-danger" href="/privacy">Privacy (testing api)</a>
-<a class="btn btn-lg btn-danger" href="/rooms">Rooms (testing api)</a>
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <!-- Test Api -->
+    <a class="btn btn-lg btn-primary" href="/privacy">Privacy (testing api)</a>
+    <a class="btn btn-lg btn-primary" href="/room">Rooms (Display all rooms)</a>
+}

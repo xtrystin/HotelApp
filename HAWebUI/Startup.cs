@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace HAWebUI
@@ -71,7 +72,13 @@ namespace HAWebUI
 
             services.AddControllersWithViews();
 
-            services.AddHttpClient();
+            services.AddHttpClient("HAApiClient", config =>
+            {
+                // Todo: Move uri to appSettings
+                config.BaseAddress = new Uri("https://localhost:5001/");
+                config.DefaultRequestHeaders.Clear();
+                //config.DefaultRequestHeaders.Add(new MediaTypeWithQualityHeaderValue("appliacation/json"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -50,31 +50,6 @@ namespace HAWebUI.Controllers
             return View();
         }
 
-        [HttpGet("~/rooms")]
-        public async Task<IActionResult> Rooms()
-        {
-            //Todo: changed AccessToken to IdToken
-            var token = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
-            if (string.IsNullOrEmpty(token))
-            {
-                throw new InvalidOperationException("The access token cannot be found in the authentication ticket. " +
-                                                    "Make sure that SaveTokens is set to true in the OIDC options.");
-            }
-
-            using var client = new HttpClient();
-
-            using var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/api/room");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            using var response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-
-            return View("Privacy");
-        }
-
-
-
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
