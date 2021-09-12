@@ -1,0 +1,32 @@
+﻿@model HAWebUI.Models.ApiErrorDisplayModel
+
+@{
+    ViewData["Title"] = "ApiError";
+}
+
+<h1>ApiError</h1>
+@if (Model.ShowError)
+{
+    <div>
+        <h4>Error Message</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Message)
+            </dd>
+        </dl>
+    </div>
+}
+
+<h2>Go back to home</h2>
+<a class="btn btn-lg btn-success" href="/home">Home</a>
+

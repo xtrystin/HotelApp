@@ -1,9 +1,11 @@
 ﻿using HaWebUI.Library.ApiHelpers;
 using HaWebUI.Library.Models;
+using HAWebUI.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Collections.Generic;
@@ -17,10 +19,12 @@ namespace HAWebUI.Controllers
     public class RoomController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<RoomController> _logger;
 
-        public RoomController(IHttpClientFactory httpClientFactory)
+        public RoomController(IHttpClientFactory httpClientFactory, ILogger<RoomController> logger)
         {
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -46,9 +50,21 @@ namespace HAWebUI.Controllers
             }
             catch (Exception ex)
             {
-                //Todo: Log this ex and display error
+                _logger.LogInformation("User {User} unsuccessfully tried to access RoomEndpoint.GetAll(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                return View("~/home");
+                ApiErrorDisplayModel apiError = new ApiErrorDisplayModel();
+                apiError.Title = ex.Message;
+                
+                if(ex.Message == "Forbidden")
+                {
+                    apiError.Message = "You do not have permission to access this page";
+                }
+                else
+                {
+                    apiError.Message = "Fatal Exception";
+                }
+
+                return View("ApiError", apiError);
             }
 
             //using var client = new HttpClient();
