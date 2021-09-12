@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HaWebUI.Library.Models.RoomModel>
+﻿@model IEnumerable<HAWebUI.Models.RoomDisplayModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,19 +19,16 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.NormalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capacity)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomType.TypeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomType.NormalPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomType.StudentPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomType.Capacity)
             </th>
             <th></th>
         </tr>
@@ -46,19 +43,16 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.NormalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomType.TypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomType.NormalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomType.StudentPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomType.Capacity)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

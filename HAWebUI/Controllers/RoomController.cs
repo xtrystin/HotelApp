@@ -9,44 +9,42 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace HAWebUI.Controllers
 {
     public class RoomController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<RoomController> _logger;
+        private readonly IRoomEndpoint _roomEndpoint;
 
-        public RoomController(IHttpClientFactory httpClientFactory, ILogger<RoomController> logger)
+        public RoomController(ILogger<RoomController> logger, IRoomEndpoint roomEndpoint)
         {
-            _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _roomEndpoint = roomEndpoint;
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var token = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
+            var token = await GetToken();
             if (string.IsNullOrEmpty(token))
             {
+                //Todo: Redirect user to error page
                 throw new InvalidOperationException("The access token cannot be found in the authentication ticket. " +
                                                     "Make sure that SaveTokens is set to true in the OIDC options.");
             }
 
-            //Todo: Use DI
-            RoomEndpoint rmEndpoint = new RoomEndpoint(_httpClientFactory);
             try
             {
-                List<RoomModel> rooms = await rmEndpoint.GetAll(token);
+                List<RoomModel> rooms = await _roomEndpoint.GetAll(token);
 
-                // Todo: Map rooms to RoomDisplayModel
+                //  Map rooms to RoomDisplayModel
+                List<RoomDisplayModel> displayRooms = MapRoomModelToDisplayModel(rooms);
 
-                return View(rooms);
+                return View(displayRooms);
             }
             catch (Exception ex)
             {
@@ -54,8 +52,8 @@ namespace HAWebUI.Controllers
 
                 ApiErrorDisplayModel apiError = new ApiErrorDisplayModel();
                 apiError.Title = ex.Message;
-                
-                if(ex.Message == "Forbidden")
+
+                if (ex.Message == "Forbidden")
                 {
                     apiError.Message = "You do not have permission to access this page";
                 }
@@ -66,15 +64,30 @@ namespace HAWebUI.Controllers
 
                 return View("ApiError", apiError);
             }
+        }
 
-            //using var client = new HttpClient();
+        private async Task<string> GetToken() => await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
 
-            //using var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/api/room");
-            //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        private List<RoomDisplayModel> MapRoomModelToDisplayModel(List<RoomModel> rooms)
+        {
+            List<RoomDisplayModel> output = new List<RoomDisplayModel>();
 
-            //using var response = await client.SendAsync(request);
-            //response.EnsureSuccessStatusCode();
+            foreach (var room in rooms)
+            {
+                var mappedRoom = new RoomDisplayModel
+                {
+                    Id = room.Id,
+                    Name = room.Name,
+                    NormalPrice = room.RoomType.NormalPrice,
+                    StudentPrice = room.RoomType.StudentPrice,
+                    Capacity = room.RoomType.Capacity,
+                    Status = room.Status
+                };
 
+                output.Add(mappedRoom);
+            }
+
+            return output;
         }
     }
 }

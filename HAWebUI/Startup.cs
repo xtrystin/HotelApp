@@ -1,3 +1,4 @@
+using HaWebUI.Library.ApiHelpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,10 @@ namespace HAWebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Personal Services
+            services.AddTransient<IRoomEndpoint, RoomEndpoint>();
+
+
             services
                 .AddAuthentication(options =>
                 {

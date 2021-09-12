@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HaWebUI.Library.ApiHelpers
 {
-    public class RoomEndpoint
+    public class RoomEndpoint : IRoomEndpoint
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
