@@ -1,5 +1,6 @@
 ﻿using HaWebUI.Library.ApiHelpers;
 using HaWebUI.Library.Models;
+using HAWebUI.Helpers;
 using HAWebUI.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -29,65 +30,133 @@ namespace HAWebUI.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var token = await GetToken();
-            if (string.IsNullOrEmpty(token))
-            {
-                //Todo: Redirect user to error page
-                throw new InvalidOperationException("The access token cannot be found in the authentication ticket. " +
-                                                    "Make sure that SaveTokens is set to true in the OIDC options.");
-            }
-
             try
             {
+                var token = await GetToken();
+
                 List<RoomModel> rooms = await _roomEndpoint.GetAll(token);
 
                 //  Map rooms to RoomDisplayModel
-                List<RoomDisplayModel> displayRooms = MapRoomModelToDisplayModel(rooms);
+                List<RoomDisplayModel> displayRooms = MyMapper.MapRoomModelToDisplayModel(rooms);
 
                 return View(displayRooms);
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("User {User} unsuccessfully tried to access RoomEndpoint.GetAll(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
+                _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.GetAll(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                ApiErrorDisplayModel apiError = new ApiErrorDisplayModel();
-                apiError.Title = ex.Message;
-
-                if (ex.Message == "Forbidden")
-                {
-                    apiError.Message = "You do not have permission to access this page";
-                }
-                else
-                {
-                    apiError.Message = "Fatal Exception";
-                }
+                var apiError = CreateApiError(ex);
 
                 return View("ApiError", apiError);
             }
         }
 
-        private async Task<string> GetToken() => await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
-
-        private List<RoomDisplayModel> MapRoomModelToDisplayModel(List<RoomModel> rooms)
+        public IActionResult Create()
         {
-            List<RoomDisplayModel> output = new List<RoomDisplayModel>();
+            // Create new Room
+            
+            // Save it to DB
 
-            foreach (var room in rooms)
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
             {
-                var mappedRoom = new RoomDisplayModel
-                {
-                    Id = room.Id,
-                    Name = room.Name,
-                    NormalPrice = room.RoomType.NormalPrice,
-                    StudentPrice = room.RoomType.StudentPrice,
-                    Capacity = room.RoomType.Capacity,
-                    Status = room.Status
-                };
+                // Get Room by id from db
+                var token = await GetToken();
 
-                output.Add(mappedRoom);
+                RoomModel room = await _roomEndpoint.GetRoomById(token, id);
+
+                // Map room to DisplayModel
+                var output = MyMapper.MapRoomModelToDisplayModel(room);
+
+                return View(output);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Edit:Get(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
+
+                var apiError = CreateApiError(ex);
+
+                return View("ApiError", apiError);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(RoomDisplayModel room)
+        {
+            try
+            {
+                var token = await GetToken();
+
+                var apiRoom = MyMapper.MapDisplayModelToApiModel(room);
+
+                await _roomEndpoint.UpdateRoom(token, apiRoom);
+
+                return Redirect("~/room");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Edit:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
+
+                var apiError = CreateApiError(ex);
+
+                return View("ApiError", apiError);
+            }
+        }
+
+        public IActionResult Details(int id)
+        {
+            // Display more info about room: TypeId, TypeName
+            // Display all RoomTypes?
+
+            return View();
+        }
+
+        public IActionResult Delete(int id)
+        {
+
+
+            return View();
+        }
+
+
+        private async Task<string> GetToken()
+        {
+            var output = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
+            if (string.IsNullOrEmpty(output))
+            {
+                //Todo: Redirect user to error page
+                throw new Exception("The access token cannot be found in the authentication ticket. " +
+                                                    "Make sure that SaveTokens is set to true in the OIDC options.");
             }
 
             return output;
         }
+
+        // Todo: ? Move it to Helpers.ErrorCreator ?
+        public ApiErrorDisplayModel CreateApiError(Exception ex)
+        {
+            ApiErrorDisplayModel apiError = new ApiErrorDisplayModel();
+            apiError.Title = ex.Message;
+
+            if (ex.Message == "Forbidden")
+            {
+                apiError.Message = "You do not have permission to access this page";
+            }
+            else
+            {
+                apiError.Message = "Fatal Exception";
+            }
+
+            return apiError;
+        }
+
+
     }
 }

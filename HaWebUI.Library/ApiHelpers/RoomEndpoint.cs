@@ -39,5 +39,40 @@ namespace HaWebUI.Library.ApiHelpers
                 throw new Exception(response.ReasonPhrase);
             }
         }
+
+        public async Task<RoomModel> GetRoomById(string token, int id)
+        {
+            var client = _httpClientFactory.CreateClient("HAApiClient");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            using var response = await client.GetAsync($"api/room/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsAsync<RoomModel>();
+
+                return result;
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
+        public async Task UpdateRoom(string token, RoomModel room)
+        {
+            var client = _httpClientFactory.CreateClient("HAApiClient");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            using var response = await client.PutAsJsonAsync("api/room", room);
+            if (response.IsSuccessStatusCode)
+            {
+                // Log success
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
     }
 }

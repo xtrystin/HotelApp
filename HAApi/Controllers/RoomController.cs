@@ -22,7 +22,7 @@ namespace HAApi.Controllers
 
         // GET: api/<RoomController>
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]    //Todo: Change Role to "User"
         public List<Room> Get()
         {
             var output = _roomData.GetRooms();
@@ -34,22 +34,28 @@ namespace HAApi.Controllers
 
         // GET api/<RoomController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        [Authorize(Roles = "Admin")]
+        public Room Get(int id)
         {
-            return "value";
+            var output = _roomData.GetRooms().Where(x => x.Id == id).FirstOrDefault();
+
+            return output;
         }
 
         // POST api/<RoomController>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void Post([FromBody] Room room)
         {
             _roomData.AddRoom(room);
         }
 
-        // PUT api/<RoomController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<RoomController>
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public void Put([FromBody] Room room)
         {
+            _roomData.UpdateRoom(room);
         }
 
         // DELETE api/<RoomController>/5

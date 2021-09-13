@@ -7,5 +7,6 @@ namespace HAApi.Library.DataAccess
     {
         List<Room> GetRooms();
         void AddRoom(Room room);
+        void UpdateRoom(Room room);
     }
 }
