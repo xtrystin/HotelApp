@@ -34,10 +34,10 @@ namespace HAWebUI.Controllers
             {
                 var token = await GetToken();
 
-                List<RoomModel> rooms = await _roomEndpoint.GetAll(token);
+                List<RoomModel> apiRooms = await _roomEndpoint.GetAll(token);
 
                 //  Map rooms to RoomDisplayModel
-                List<RoomDisplayModel> displayRooms = MyMapper.MapRoomModelToDisplayModel(rooms);
+                List<RoomDisplayModel> displayRooms = MyMapper.MapRoomModelToDisplayModel(apiRooms);
 
                 return View(displayRooms);
             }
@@ -51,13 +51,37 @@ namespace HAWebUI.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
-            // Create new Room
-            
-            // Save it to DB
+            RoomDisplayModel displayRoom = new RoomDisplayModel();
 
-            return View();
+            return View(displayRoom);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(RoomDisplayModel displayRoom)
+        {
+            try
+            {
+                var token = await GetToken();
+
+                var apiRoom = MyMapper.MapDisplayModelToApiModel(displayRoom);
+
+                await _roomEndpoint.CreateRoom(token, apiRoom);
+
+                return Redirect("~/room");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Create:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
+
+                var apiError = CreateApiError(ex);
+
+                return View("ApiError", apiError);
+            }
         }
 
         [HttpGet]
@@ -69,12 +93,12 @@ namespace HAWebUI.Controllers
                 // Get Room by id from db
                 var token = await GetToken();
 
-                RoomModel room = await _roomEndpoint.GetRoomById(token, id);
+                RoomModel apiRoom = await _roomEndpoint.GetRoomById(token, id);
 
                 // Map room to DisplayModel
-                var output = MyMapper.MapRoomModelToDisplayModel(room);
+                var displayRoom = MyMapper.MapRoomModelToDisplayModel(apiRoom);
 
-                return View(output);
+                return View(displayRoom);
             }
             catch (Exception ex)
             {
@@ -88,13 +112,13 @@ namespace HAWebUI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(RoomDisplayModel room)
+        public async Task<IActionResult> Edit(RoomDisplayModel displayRoom)
         {
             try
             {
                 var token = await GetToken();
 
-                var apiRoom = MyMapper.MapDisplayModelToApiModel(room);
+                var apiRoom = MyMapper.MapDisplayModelToApiModel(displayRoom);
 
                 await _roomEndpoint.UpdateRoom(token, apiRoom);
 
@@ -148,6 +172,10 @@ namespace HAWebUI.Controllers
             if (ex.Message == "Forbidden")
             {
                 apiError.Message = "You do not have permission to access this page";
+            }
+            else if (ex.Message == "Unauthorized")
+            {
+                apiError.Message = "You are not authorized. Please try sign out, sign in and try again.";
             }
             else
             {

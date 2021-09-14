@@ -58,6 +58,22 @@ namespace HaWebUI.Library.ApiHelpers
             }
         }
 
+        public async Task CreateRoom(string token, RoomModel room)
+        {
+            var client = _httpClientFactory.CreateClient("HAApiClient");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            using var response = await client.PostAsJsonAsync("api/room", room);
+            if (response.IsSuccessStatusCode)
+            {
+                // Log success
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
         public async Task UpdateRoom(string token, RoomModel room)
         {
             var client = _httpClientFactory.CreateClient("HAApiClient");
