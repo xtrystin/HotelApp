@@ -12,6 +12,8 @@ namespace HaWebUI.Library.Models
         public string Name { get; set; }
         public string Status { get; set; }
 
-        public RoomType RoomType { get; set; }
+        public decimal NormalPrice { get; set; }
+        public decimal StudentPrice { get; set; }
+        public int Capacity { get; set; }
     }
 }

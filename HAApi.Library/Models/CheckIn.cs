@@ -14,7 +14,7 @@ namespace HAApi.Library.Models
         public int CashierId { get; set; }
         [Required]
         public int AdultsAmount{ get; set; }
-        public int KidsAmount{ get; set; }
+        public int StudentsAmount{ get; set; }
         public DateTime CheckInDate { get; set; } = DateTime.Now;
         [Required]
         public int DaysAmount { get; set; }

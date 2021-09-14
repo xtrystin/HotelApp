@@ -20,11 +20,9 @@ namespace HAWebUI.Helpers
                 {
                     Id = room.Id,
                     Name = room.Name,
-                    TypeId = room.RoomType.Id,
-                    TypeName = room.RoomType.TypeName,
-                    NormalPrice = room.RoomType.NormalPrice,
-                    StudentPrice = room.RoomType.StudentPrice,
-                    Capacity = room.RoomType.Capacity,
+                    NormalPrice = room.NormalPrice,
+                    StudentPrice = room.StudentPrice,
+                    Capacity = room.Capacity,
                     Status = room.Status
                 };
 
@@ -40,11 +38,9 @@ namespace HAWebUI.Helpers
             {
                 Id = room.Id,
                 Name = room.Name,
-                TypeId = room.RoomType.Id,
-                TypeName = room.RoomType.TypeName,
-                NormalPrice = room.RoomType.NormalPrice,
-                StudentPrice = room.RoomType.StudentPrice,
-                Capacity = room.RoomType.Capacity,
+                NormalPrice = room.NormalPrice,
+                StudentPrice = room.StudentPrice,
+                Capacity = room.Capacity,
                 Status = room.Status
             };
 
@@ -58,14 +54,9 @@ namespace HAWebUI.Helpers
                 Id = room.Id,
                 Name = room.Name,
                 Status = room.Status,
-                RoomType = new RoomType()
-                {
-                    //Id = room.TypeId,
-                    TypeName = room.TypeName,
-                    NormalPrice = room.NormalPrice,
-                    StudentPrice = room.StudentPrice,
-                    Capacity = room.Capacity
-                }
+                NormalPrice = room.NormalPrice,
+                StudentPrice = room.StudentPrice,
+                Capacity = room.Capacity
             };
 
             return output;

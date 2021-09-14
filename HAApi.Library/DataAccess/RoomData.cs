@@ -21,7 +21,6 @@ namespace HAApi.Library.DataAccess
         public List<Room> GetRooms()
         {
             var output = _db.Rooms
-                .Include(a => a.RoomType)
                 .ToList();
 
             return output;
@@ -37,7 +36,6 @@ namespace HAApi.Library.DataAccess
         public void UpdateRoom(Room room)
         {
             var entity = _db.Rooms
-                .Include(a => a.RoomType)
                 .FirstOrDefault(a => a.Id == room.Id);
             if(entity == null)
             {
@@ -48,9 +46,9 @@ namespace HAApi.Library.DataAccess
                 // Make changes on entity
                 entity.Name = room.Name;
                 entity.Status = room.Status;
-                entity.RoomType.NormalPrice = room.RoomType.NormalPrice;
-                entity.RoomType.StudentPrice = room.RoomType.StudentPrice;
-                entity.RoomType.Capacity = room.RoomType.Capacity;
+                entity.NormalPrice = room.NormalPrice;
+                entity.StudentPrice = room.StudentPrice;
+                entity.Capacity = room.Capacity;
 
                 _db.SaveChanges();
             }
