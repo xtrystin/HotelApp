@@ -10,5 +10,6 @@ namespace HaWebUI.Library.ApiHelpers
         Task<RoomModel> GetRoomById(string token, int id);
         Task CreateRoom(string token, RoomModel room);
         Task UpdateRoom(string token, RoomModel room);
+        Task DeleteRoom(string token, int id);
     }
 }

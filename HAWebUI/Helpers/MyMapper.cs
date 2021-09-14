@@ -10,7 +10,7 @@ namespace HAWebUI.Helpers
     public static class MyMapper
     {
         //Todo: ? make generic func / use AutoMapper ?
-        public static List<RoomDisplayModel> MapRoomModelToDisplayModel(List<RoomModel> rooms)
+        public static List<RoomDisplayModel> MapApiRoomModelToDisplayModel(List<RoomModel> rooms)
         {
             List<RoomDisplayModel> output = new List<RoomDisplayModel>();
 
@@ -32,7 +32,7 @@ namespace HAWebUI.Helpers
             return output;
         }
 
-        public static RoomDisplayModel MapRoomModelToDisplayModel(RoomModel room)
+        public static RoomDisplayModel MapApiRoomModelToDisplayModel(RoomModel room)
         {
             var output = new RoomDisplayModel
             {
@@ -47,7 +47,7 @@ namespace HAWebUI.Helpers
             return output;
         }
 
-        public static RoomModel MapDisplayModelToApiModel(RoomDisplayModel room)
+        public static RoomModel MapDisplayModelToApiRoomModel(RoomDisplayModel room)
         {
             var output = new RoomModel()
             {

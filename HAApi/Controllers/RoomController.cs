@@ -32,7 +32,7 @@ namespace HAApi.Controllers
             return output;
         }
 
-        // GET api/<RoomController>/5
+        // GET api/<RoomController>/<id>
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public Room Get(int id)
@@ -58,10 +58,12 @@ namespace HAApi.Controllers
             _roomData.UpdateRoom(room);
         }
 
-        // DELETE api/<RoomController>/5
+        // DELETE api/<RoomController>/<id>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void Delete(int id)
         {
+            _roomData.DeleteRoom(id);
         }
     }
 }

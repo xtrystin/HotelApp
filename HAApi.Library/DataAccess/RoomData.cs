@@ -52,7 +52,15 @@ namespace HAApi.Library.DataAccess
 
                 _db.SaveChanges();
             }
+        }
 
+        public void DeleteRoom(int id)
+        {
+            var entity = _db.Rooms.FirstOrDefault(a => a.Id == id);
+            
+            _db.Rooms.Remove(entity);
+
+            _db.SaveChanges();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace HAWebUI.Controllers
                 List<RoomModel> apiRooms = await _roomEndpoint.GetAll(token);
 
                 //  Map rooms to RoomDisplayModel
-                List<RoomDisplayModel> displayRooms = MyMapper.MapRoomModelToDisplayModel(apiRooms);
+                List<RoomDisplayModel> displayRooms = MyMapper.MapApiRoomModelToDisplayModel(apiRooms);
 
                 return View(displayRooms);
             }
@@ -68,7 +68,7 @@ namespace HAWebUI.Controllers
             {
                 var token = await GetToken();
 
-                var apiRoom = MyMapper.MapDisplayModelToApiModel(displayRoom);
+                var apiRoom = MyMapper.MapDisplayModelToApiRoomModel(displayRoom);
 
                 await _roomEndpoint.CreateRoom(token, apiRoom);
 
@@ -96,7 +96,7 @@ namespace HAWebUI.Controllers
                 RoomModel apiRoom = await _roomEndpoint.GetRoomById(token, id);
 
                 // Map room to DisplayModel
-                var displayRoom = MyMapper.MapRoomModelToDisplayModel(apiRoom);
+                var displayRoom = MyMapper.MapApiRoomModelToDisplayModel(apiRoom);
 
                 return View(displayRoom);
             }
@@ -118,7 +118,7 @@ namespace HAWebUI.Controllers
             {
                 var token = await GetToken();
 
-                var apiRoom = MyMapper.MapDisplayModelToApiModel(displayRoom);
+                var apiRoom = MyMapper.MapDisplayModelToApiRoomModel(displayRoom);
 
                 await _roomEndpoint.UpdateRoom(token, apiRoom);
 
@@ -142,11 +142,54 @@ namespace HAWebUI.Controllers
             return View();
         }
 
-        public IActionResult Delete(int id)
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                // Get Room by id from db
+                var token = await GetToken();
 
+                RoomModel apiRoom = await _roomEndpoint.GetRoomById(token, id);
 
-            return View();
+                // Map room to DisplayModel
+                var displayRoom = MyMapper.MapApiRoomModelToDisplayModel(apiRoom);
+
+                return View(displayRoom);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Delete:Get(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
+
+                var apiError = CreateApiError(ex);
+
+                return View("ApiError", apiError);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(RoomDisplayModel displayRoom)
+        {
+            try
+            {
+                var token = await GetToken();
+
+                var id = displayRoom.Id;
+
+                await _roomEndpoint.DeleteRoom(token, id);
+
+                return Redirect("~/room");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Delete:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
+
+                var apiError = CreateApiError(ex);
+
+                return View("ApiError", apiError);
+            }
         }
 
 

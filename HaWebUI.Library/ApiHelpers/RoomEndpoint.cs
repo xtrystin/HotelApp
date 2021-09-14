@@ -90,5 +90,20 @@ namespace HaWebUI.Library.ApiHelpers
             }
         }
 
+        public async Task DeleteRoom(string token, int id)
+        {
+            var client = _httpClientFactory.CreateClient("HAApiClient");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            using var response = await client.DeleteAsync($"api/room/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                // Log success
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
     }
 }
