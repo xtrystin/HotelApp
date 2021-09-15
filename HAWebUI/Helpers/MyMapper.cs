@@ -12,6 +12,11 @@ namespace HAWebUI.Helpers
         //Todo: ? make generic func / use AutoMapper ?
         public static List<RoomDisplayModel> MapApiRoomModelToDisplayModel(List<RoomModel> rooms)
         {
+            if(rooms == null)
+            {
+                throw new Exception("Mapper failed: The list of rooms is empty");
+            }
+
             List<RoomDisplayModel> output = new List<RoomDisplayModel>();
 
             foreach (var room in rooms)
@@ -34,6 +39,11 @@ namespace HAWebUI.Helpers
 
         public static RoomDisplayModel MapApiRoomModelToDisplayModel(RoomModel room)
         {
+            if (room == null)
+            {
+                throw new Exception("Mapper failed: The room is empty");
+            }
+
             var output = new RoomDisplayModel
             {
                 Id = room.Id,
@@ -49,6 +59,11 @@ namespace HAWebUI.Helpers
 
         public static RoomModel MapDisplayModelToApiRoomModel(RoomDisplayModel room)
         {
+            if (room == null)
+            {
+                throw new Exception("Mapper failed: The room is empty");
+            }
+
             var output = new RoomModel()
             {
                 Id = room.Id,

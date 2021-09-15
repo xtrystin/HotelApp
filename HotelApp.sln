@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HAApi", "HAApi\HAApi.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HAApi.Library", "HAApi.Library\HAApi.Library.csproj", "{EA0CAF08-BCF6-402E-890E-D70EF6A221C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaWebUI.Library", "HaWebUI.Library\HaWebUI.Library.csproj", "{21E6DB15-456D-4EC5-AE63-7047EEF55994}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaWebUI.Library", "HaWebUI.Library\HaWebUI.Library.csproj", "{21E6DB15-456D-4EC5-AE63-7047EEF55994}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HAWebUI.Tests", "HAWebUI.Tests\HAWebUI.Tests.csproj", "{F845B310-FC1F-43CE-83F0-EE60280C349F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{21E6DB15-456D-4EC5-AE63-7047EEF55994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21E6DB15-456D-4EC5-AE63-7047EEF55994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21E6DB15-456D-4EC5-AE63-7047EEF55994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F845B310-FC1F-43CE-83F0-EE60280C349F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F845B310-FC1F-43CE-83F0-EE60280C349F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F845B310-FC1F-43CE-83F0-EE60280C349F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F845B310-FC1F-43CE-83F0-EE60280C349F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

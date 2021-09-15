@@ -45,7 +45,7 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.GetAll(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = CreateApiError(ex);
+                var apiError = ErrorCreator.CreateApiError(ex);
 
                 return View("ApiError", apiError);
             }
@@ -78,7 +78,7 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Create:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = CreateApiError(ex);
+                var apiError = ErrorCreator.CreateApiError(ex);
 
                 return View("ApiError", apiError);
             }
@@ -104,7 +104,7 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Edit:Get(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = CreateApiError(ex);
+                var apiError = ErrorCreator.CreateApiError(ex);
 
                 return View("ApiError", apiError);
             }
@@ -128,7 +128,7 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Edit:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = CreateApiError(ex);
+                var apiError = ErrorCreator.CreateApiError(ex);
 
                 return View("ApiError", apiError);
             }
@@ -139,7 +139,7 @@ namespace HAWebUI.Controllers
             // Display more info about room: TypeId, TypeName
             // Display all RoomTypes?
 
-            return View();
+            return View("~/room");
         }
 
         [HttpGet]
@@ -162,7 +162,7 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Delete:Get(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = CreateApiError(ex);
+                var apiError = ErrorCreator.CreateApiError(ex);
 
                 return View("ApiError", apiError);
             }
@@ -186,7 +186,7 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Delete:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = CreateApiError(ex);
+                var apiError = ErrorCreator.CreateApiError(ex);
 
                 return View("ApiError", apiError);
             }
@@ -205,29 +205,5 @@ namespace HAWebUI.Controllers
 
             return output;
         }
-
-        // Todo: ? Move it to Helpers.ErrorCreator ?
-        public ApiErrorDisplayModel CreateApiError(Exception ex)
-        {
-            ApiErrorDisplayModel apiError = new ApiErrorDisplayModel();
-            apiError.Title = ex.Message;
-
-            if (ex.Message == "Forbidden")
-            {
-                apiError.Message = "You do not have permission to access this page";
-            }
-            else if (ex.Message == "Unauthorized")
-            {
-                apiError.Message = "You are not authorized. Please try sign out, sign in and try again.";
-            }
-            else
-            {
-                apiError.Message = "Fatal Exception";
-            }
-
-            return apiError;
-        }
-
-
     }
 }
