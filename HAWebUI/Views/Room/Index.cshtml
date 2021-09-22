@@ -4,11 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Hotel Rooms</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -34,32 +38,37 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NormalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NormalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Capacity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                }
+
+            </tr>
+        }
     </tbody>
 </table>

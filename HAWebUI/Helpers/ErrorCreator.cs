@@ -12,7 +12,7 @@ namespace HAWebUI.Helpers
             if (ex == null)
             {
                 apiError.Title = "Exception is null";
-                apiError.Message = "Fatal Exception";
+                apiError.Message = "Fatal Exception. Please contact with your administrator!";
 
                 return apiError;
             }
@@ -29,7 +29,7 @@ namespace HAWebUI.Helpers
                 }
                 else
                 {
-                    apiError.Message = "Fatal Exception";
+                    apiError.Message = "Fatal Exception. Please contact with your administrator!";
                 }
 
                 return apiError; 

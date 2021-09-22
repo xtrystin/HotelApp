@@ -76,5 +76,35 @@ namespace HAWebUI.Helpers
 
             return output;
         }
+
+        // Todo: Test it
+        public static CheckInModel MapDisplayModelToApiCheckInModel(CheckInDisplayModel checkInInfo)
+        {
+            if(checkInInfo == null)
+            {
+                throw new Exception("Mapper failed: The checkIn info is empty");
+            }
+
+            var output = new CheckInModel
+            {
+                Id = checkInInfo.Id,
+                CashierId = checkInInfo.CashierId,
+                AdultsAmount = checkInInfo.AdultsAmount,
+                StudentsAmount = checkInInfo.StudentsAmount,
+                CheckInDate = checkInInfo.CheckInDate,
+                DaysAmount = checkInInfo.DaysAmount,
+                RoomId = checkInInfo.RoomId,
+                Customer = new CustomerModel
+                {
+                    Id = checkInInfo.CustomerId,
+                    FirstName = checkInInfo.FirstName,
+                    LastName = checkInInfo.LastName,
+                    Email = checkInInfo.Email,
+                    Phone = checkInInfo.Phone
+                }
+            };
+
+            return output;
+        }
     }
 }
