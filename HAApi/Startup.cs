@@ -1,6 +1,7 @@
 using AspNet.Security.OpenIdConnect.Primitives;
 using HAApi.Library.Context;
 using HAApi.Library.DataAccess;
+using HAApi.Library.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,8 @@ namespace HAApi
 
             // Personal Services
             services.AddTransient<IRoomData, RoomData>();
+            services.AddTransient<IConfigHelper, ConfigHelper>();
+            services.AddTransient<ICheckInData, CheckInData>();
 
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

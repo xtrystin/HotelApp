@@ -22,7 +22,7 @@ namespace HAApi.Controllers
 
         // GET: api/<RoomController>
         [HttpGet]
-        [Authorize(Roles = "Admin")]    //Todo: Change Role to "User"
+        [Authorize]    //Todo: Change Role to "User/Cashier"
         public List<Room> Get()
         {
             var output = _roomData.GetRooms();
@@ -34,7 +34,7 @@ namespace HAApi.Controllers
 
         // GET api/<RoomController>/<id>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize] //Todo: Change Role to "User/Cashier"
         public Room Get(int id)
         {
             var output = _roomData.GetRooms().Where(x => x.Id == id).FirstOrDefault();
