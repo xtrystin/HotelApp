@@ -124,6 +124,16 @@ namespace HAOpenIddictServer
                     options.UseAspNetCore();
                 });
 
+            services.AddAuthentication()
+               .AddGoogle(options =>
+               {
+                   IConfigurationSection googleAuthNSection =
+                       Configuration.GetSection("Authentication:Google");
+
+                   options.ClientId = googleAuthNSection["ClientId"];
+                   options.ClientSecret = googleAuthNSection["ClientSecret"];
+               });
+
             // Register the worker responsible of seeding the database with the sample clients.
             // Note: in a real world application, this step should be part of a setup script.
             services.AddHostedService<Worker>();
