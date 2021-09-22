@@ -20,6 +20,7 @@ namespace HAApi.Library.Models
         [MaxLength(200)]
         public string Email { get; set; }
         [Required]
-        public int Phone { get; set; }
+        [MaxLength(15)]
+        public string Phone { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace HAApi.Library.Models
     public class CheckOut
     {
         public int Id { get; set; }
-        public int CashierId { get; set; }
+        public string CashierId { get; set; }
         public DateTime CheckOutDate { get; set; } = DateTime.Now;
 
         [Required]

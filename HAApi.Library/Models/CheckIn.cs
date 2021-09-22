@@ -11,26 +11,21 @@ namespace HAApi.Library.Models
     public class CheckIn
     {
         public int Id { get; set; }
-        public int CashierId { get; set; }
+        [Required]
+        public string CashierId { get; set; }
         [Required]
         public int AdultsAmount{ get; set; }
+        [Required]
         public int StudentsAmount{ get; set; }
-        public DateTime CheckInDate { get; set; } = DateTime.Now;
+        [Required]
+        public DateTime CheckInDate { get; set; }
         [Required]
         public int DaysAmount { get; set; }
-        [Required]
-        [Column(TypeName = "Money")]
-        public decimal SubTotal { get; set; }
-        [Required]
-        [Column(TypeName = "Money")]
-        public decimal Tax { get; set; }
-        [Required]
-        [Column(TypeName = "Money")]
-        public decimal Total { get; set; }
 
         [Required]
-        public Room Room { get; set; }
+        public int RoomId { get; set; }
         [Required]
         public Customer Customer { get; set; }
+        public Payment Payment { get; set; }
     }
 }

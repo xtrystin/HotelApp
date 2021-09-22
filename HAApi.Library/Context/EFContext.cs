@@ -16,5 +16,6 @@ namespace HAApi.Library.Context
         public DbSet<CheckOut> CheckOuts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }
