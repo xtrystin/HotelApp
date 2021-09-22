@@ -30,7 +30,7 @@ namespace HAWebUI.Controllers
         }
 
         // GET: CheckInController
-        [Authorize]
+        [Authorize(Roles = "Cashier,Admin")]
         [HttpGet]
         public ActionResult Index()
         {
@@ -39,7 +39,7 @@ namespace HAWebUI.Controllers
             return View(displayCheckInInfo);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Cashier,Admin")]
         [HttpPost]
         public async Task<ActionResult> Index(CheckInDisplayModel displayCheckInInfo)
         {
@@ -74,7 +74,7 @@ namespace HAWebUI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "Cashier,Admin")]
         public async Task<ActionResult> Cancel()
         {
             try

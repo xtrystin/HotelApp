@@ -24,7 +24,7 @@ namespace HAApi.Controllers
 
         // POST api/<CheckInController>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Cashier,Admin")]
         public Payment Post([FromBody] CheckIn checkInInfo)
         {
             return _checkInData.SaveCheckInInfo(checkInInfo);
@@ -37,7 +37,7 @@ namespace HAApi.Controllers
         /// </summary>
         /// <param name="cashierId"></param>
         [HttpPost("DeleteLastCheckIn")]
-        [Authorize]
+        [Authorize(Roles = "Cashier,Admin")]
         public void DeleteLastCheckIn([FromBody] string cashierId)
         {
             _checkInData.DeleteLastCheckInCashierMade(cashierId);

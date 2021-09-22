@@ -52,7 +52,7 @@ namespace HAWebUI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             RoomDisplayModel displayRoom = new RoomDisplayModel();
@@ -61,7 +61,7 @@ namespace HAWebUI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(RoomDisplayModel displayRoom)
         {
             try
@@ -85,7 +85,7 @@ namespace HAWebUI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -111,7 +111,7 @@ namespace HAWebUI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(RoomDisplayModel displayRoom)
         {
             try
@@ -133,7 +133,8 @@ namespace HAWebUI.Controllers
                 return View("ApiError", apiError);
             }
         }
-
+        [HttpGet]
+        [Authorize(Roles = "Cashier,Admin")]
         public IActionResult Details(int id)
         {
             // Display more info about room: TypeId, TypeName
@@ -143,7 +144,7 @@ namespace HAWebUI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -169,7 +170,7 @@ namespace HAWebUI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(RoomDisplayModel displayRoom)
         {
             try
