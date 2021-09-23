@@ -1,10 +1,10 @@
-﻿@model HAWebUI.Models.ApiErrorDisplayModel
+﻿@model HAWebUI.Models.GeneralErrorDisplayModel
 
 @{
-    ViewData["Title"] = "ApiError";
+    ViewData["Title"] = "General Error";
 }
 
-<h1>ApiError</h1>
+<h1>An error occured!</h1>
 @if (Model.ShowError)
 {
     <div>
@@ -27,6 +27,6 @@
     </div>
 }
 
-<h2>Go back to home</h2>
+<h4>Go back to home</h4>
 <a class="btn btn-lg btn-success" href="/home">Home</a>
 

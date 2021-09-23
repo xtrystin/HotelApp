@@ -5,34 +5,34 @@ namespace HAWebUI.Helpers
 {
     public static class ErrorCreator
     {
-        public static ApiErrorDisplayModel CreateApiError(Exception ex)
+        public static GeneralErrorDisplayModel CreateGeneralError(Exception ex)
         {
-            ApiErrorDisplayModel apiError = new ApiErrorDisplayModel();
+            GeneralErrorDisplayModel error = new GeneralErrorDisplayModel();
 
             if (ex == null)
             {
-                apiError.Title = "Exception is null";
-                apiError.Message = "Fatal Exception. Please contact with your administrator!";
+                error.Title = "Exception is null";
+                error.Message = "Fatal Exception. Please contact with your administrator!";
 
-                return apiError;
+                return error;
             }
             else
             {
-                apiError.Title = ex.Message;
+                error.Title = ex.Message;
                 if (ex.Message == "Forbidden")
                 {
-                    apiError.Message = "You do not have permission to access this page";
+                    error.Message = "You do not have permission to access this page";
                 }
                 else if (ex.Message == "Unauthorized")
                 {
-                    apiError.Message = "You are not authorized. Please try sign out, sign in and try again.";
+                    error.Message = "You are not authorized. Please try sign out, sign in and try again.";
                 }
                 else
                 {
-                    apiError.Message = "Fatal Exception. Please contact with your administrator!";
+                    error.Message = "Fatal Exception. Please contact with your administrator!";
                 }
 
-                return apiError; 
+                return error; 
             }
         }
     }

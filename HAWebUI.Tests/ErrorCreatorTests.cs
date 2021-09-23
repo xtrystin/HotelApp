@@ -14,14 +14,14 @@ namespace HAWebUI.Tests
         [Theory]
         [InlineData("Forbidden", "You do not have permission to access this page")]
         [InlineData("Unauthorized", "You are not authorized. Please try sign out, sign in and try again.")]
-        [InlineData("aaa123", "Fatal Exception")]
-        public void CreateApiError_ShouldWorkIfNotNull(string message, string expectedMessage)
+        [InlineData("aaa123", "Fatal Exception. Please contact with your administrator!")]
+        public void CreateGeneralError_ShouldWorkIfNotNull(string message, string expectedMessage)
         {
             // Arrange
             Exception ex = new Exception(message);
 
             // Act
-            var actual = ErrorCreator.CreateApiError(ex);
+            var actual = ErrorCreator.CreateGeneralError(ex);
 
             // Assert
             Assert.NotNull(actual);
@@ -31,18 +31,18 @@ namespace HAWebUI.Tests
         }
 
         [Fact]
-        public void CreateApiError_ShouldWorkIfNull()
+        public void CreateGeneralError_ShouldWorkIfNull()
         {
             // Arrange
             Exception ex = null;
 
             // Act
-            var actual = ErrorCreator.CreateApiError(ex);
+            var actual = ErrorCreator.CreateGeneralError(ex);
 
             // Assert
             Assert.NotNull(actual);
             Assert.True(actual.Title == "Exception is null");
-            Assert.True(actual.Message == "Fatal Exception");
+            Assert.True(actual.Message == "Fatal Exception. Please contact with your administrator!");
             Assert.True(actual.ShowError == true);
         }
     }

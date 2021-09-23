@@ -45,9 +45,9 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.GetAll(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
 
@@ -78,9 +78,9 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Create:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
 
@@ -104,9 +104,9 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Edit:Get(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
 
@@ -128,9 +128,9 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Edit:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
         [HttpGet]
@@ -163,9 +163,9 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Delete:Get(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
 
@@ -187,9 +187,9 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access RoomEndpoint.Delete:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
 
@@ -199,7 +199,6 @@ namespace HAWebUI.Controllers
             var output = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
             if (string.IsNullOrEmpty(output))
             {
-                //Todo: Redirect user to error page
                 throw new Exception("The access token cannot be found in the authentication ticket. " +
                                                     "Make sure that SaveTokens is set to true in the OIDC options.");
             }

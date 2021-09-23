@@ -67,10 +67,9 @@ namespace HAWebUI.Controllers
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access CheckInController.Index:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                // Todo: Make it more generic (not only api error can occur)
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
 
@@ -85,16 +84,16 @@ namespace HAWebUI.Controllers
                 // Remove created CheckIn record from DB
                 await _checkInEndpoint.DeleteLastCheckInCashierMade(token, cashierId);
 
-                // Todo: Inform user about successful result(through apiError page?)
+                // Todo: Inform user about successful result(through GeneralError page?)
                 return Redirect("~/home");
             }
             catch (Exception ex)
             {
                 _logger.LogWarning("User {User} unsuccessfully tried to access CheckInController.Cancel. Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
 
-                var apiError = ErrorCreator.CreateApiError(ex);
+                var error = ErrorCreator.CreateGeneralError(ex);
 
-                return View("ApiError", apiError);
+                return View("GeneralError", error);
             }
         }
 
@@ -104,7 +103,6 @@ namespace HAWebUI.Controllers
             var output = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
             if (string.IsNullOrEmpty(output))
             {
-                //Todo: Redirect user to error page
                 throw new Exception("The access token cannot be found in the authentication ticket. " +
                                                     "Make sure that SaveTokens is set to true in the OIDC options.");
             }

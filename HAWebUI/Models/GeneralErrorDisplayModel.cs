@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HAWebUI.Models
 {
-    public class ApiErrorDisplayModel
+    public class GeneralErrorDisplayModel
     {
         public string Title { get; set; }
         public string Message { get; set; }
