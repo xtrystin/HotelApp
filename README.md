@@ -1,8 +1,10 @@
 # HotelApp
 Hotel Application provides system to manage hotel.
 
-Features in progress:
+### Functionalities:
 - Check in a guest		
-- Check out			
+- Check out a guest
 - Manage hotel's rooms
+
+### Features in progress:
 - Guest is able to book a room
