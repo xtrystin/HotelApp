@@ -32,6 +32,7 @@ namespace HAWebUI
             // Personal Services
             services.AddTransient<IRoomEndpoint, RoomEndpoint>();
             services.AddTransient<ICheckInEndpoint, CheckInEndpoint>();
+            services.AddTransient<ICheckOutEndpoint, CheckOutEndpoint>();
 
 
             services

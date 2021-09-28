@@ -1,4 +1,5 @@
 ﻿using HAApi.Library.Models;
+using HAApi.Library.Models.EFModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

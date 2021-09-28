@@ -45,6 +45,7 @@ namespace HAApi
             services.AddTransient<IRoomData, RoomData>();
             services.AddTransient<IConfigHelper, ConfigHelper>();
             services.AddTransient<ICheckInData, CheckInData>();
+            services.AddTransient<ICheckOutData, CheckOutData>();
 
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

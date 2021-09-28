@@ -25,7 +25,7 @@ namespace HAWebUI.Helpers
                 }
                 else if (ex.Message == "Unauthorized")
                 {
-                    error.Message = "You are not authorized. Please try sign out, sign in and try again.";
+                    error.Message = "You are not authorized. Please try to sign out, sign in and try again.";
                 }
                 else
                 {

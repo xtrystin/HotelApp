@@ -1,5 +1,6 @@
 ﻿using HAApi.Library.DataAccess;
 using HAApi.Library.Models;
+using HAApi.Library.Models.EFModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

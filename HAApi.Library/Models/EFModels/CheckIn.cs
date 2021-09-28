@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HAApi.Library.Models
+namespace HAApi.Library.Models.EFModels
 {
     public class CheckIn
     {
@@ -14,9 +14,9 @@ namespace HAApi.Library.Models
         [Required]
         public string CashierId { get; set; }
         [Required]
-        public int AdultsAmount{ get; set; }
+        public int AdultsAmount { get; set; }
         [Required]
-        public int StudentsAmount{ get; set; }
+        public int StudentsAmount { get; set; }
         [Required]
         public DateTime CheckInDate { get; set; }
         [Required]

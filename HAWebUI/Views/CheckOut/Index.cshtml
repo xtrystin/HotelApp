@@ -1,0 +1,49 @@
+﻿@model HAWebUI.Models.CheckOutDisplayModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Check Out</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoomId" class="control-label"></label>
+                <input asp-for="RoomId" class="form-control" />
+                <a class="btn btn-sm btn-info" href="/room" target="_blank">Rooms (Display all rooms)</a>
+                <span asp-validation-for="RoomId" class="text-danger"></span>
+            </div>
+            <h3>Fill in customer's data</h3>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

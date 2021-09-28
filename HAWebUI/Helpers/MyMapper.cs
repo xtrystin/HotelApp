@@ -106,5 +106,27 @@ namespace HAWebUI.Helpers
 
             return output;
         }
+
+        // Todo: Test it
+        public static CheckOutModel MapDisplayModelToApiCheckOutModel(CheckOutDisplayModel checkOutInfo)
+        {
+            if (checkOutInfo == null)
+            {
+                throw new Exception("Mapper failed: The checkOutInfo is empty");
+            }
+
+            var output = new CheckOutModel
+            {
+                Id = checkOutInfo.Id,
+                CashierId = checkOutInfo.CashierId,
+                CheckOutDate = checkOutInfo.CheckOutDate,
+                RoomId = checkOutInfo.RoomId,
+                FirstName = checkOutInfo.FirstName,
+                LastName = checkOutInfo.LastName,
+                Phone = checkOutInfo.Phone
+            };
+
+            return output;
+        }
     }
 }

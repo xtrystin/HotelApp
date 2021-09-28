@@ -1,4 +1,5 @@
 ﻿using HAApi.Library.Models;
+using HAApi.Library.Models.EFModels;
 
 namespace HAApi.Library.DataAccess
 {

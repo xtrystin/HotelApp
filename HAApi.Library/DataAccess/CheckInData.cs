@@ -1,6 +1,7 @@
 ﻿using HAApi.Library.Context;
 using HAApi.Library.Helpers;
 using HAApi.Library.Models;
+using HAApi.Library.Models.EFModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
