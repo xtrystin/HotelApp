@@ -17,12 +17,10 @@ namespace HAWebUI.Controllers
 {
     public class CheckOutController : Controller
     {
-        private readonly ILogger<CheckOutController> _logger;
         private readonly ICheckOutEndpoint _checkOutEndpoint;
 
-        public CheckOutController(ILogger<CheckOutController> logger, ICheckOutEndpoint checkOutEndpoint)
+        public CheckOutController( ICheckOutEndpoint checkOutEndpoint)
         {
-            _logger = logger;
             _checkOutEndpoint = checkOutEndpoint;
         }
 
@@ -44,40 +42,19 @@ namespace HAWebUI.Controllers
             displayCheckOutInfo.CashierId = User.Identity.Name;
             displayCheckOutInfo.CheckOutDate = DateTime.Now;
 
-            try
-            {
-                var token = await GetToken();
+            var token = await GetToken();
 
-                // Map displayModel to api model
-                var apiCheckOutInfo = MyMapper.MapDisplayModelToApiCheckOutModel(displayCheckOutInfo);
+            // Map displayModel to api model
+            var apiCheckOutInfo = MyMapper.MapDisplayModelToApiCheckOutModel(displayCheckOutInfo);
 
-                // Send to api 
-                await _checkOutEndpoint.PostCheckOutInfo(token, apiCheckOutInfo);
+            // Send to api 
+            await _checkOutEndpoint.PostCheckOutInfo(token, apiCheckOutInfo);
 
-                // Todo: Display success Page
-                return Redirect("~/home");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning("User {User} unsuccessfully tried to access CheckOutController.Index:Post(). Exception Message: {ex.Message}", User.Identity.Name, ex.Message);
-
-                var error = ErrorCreator.CreateGeneralError(ex);
-
-                return View("GeneralError", error);
-            }
+            // Todo: Display success Page
+            return Redirect("~/home");
         }
 
-        //Todo: Make it DRY (same function in RoomController and here)
-        private async Task<string> GetToken()
-        {
-            var output = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
-            if (string.IsNullOrEmpty(output))
-            {
-                throw new Exception("The access token cannot be found in the authentication ticket. " +
-                                                    "Make sure that SaveTokens is set to true in the OIDC options.");
-            }
 
-            return output;
-        }
+        private async Task<string> GetToken() => await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
     }
 }

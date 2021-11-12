@@ -11,18 +11,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using HAWebUI.Models;
+using HAWebUI.Helpers;
 
 namespace HAWebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();
@@ -31,7 +25,6 @@ namespace HAWebUI.Controllers
         [HttpGet("~/privacy")]
         public async Task<IActionResult> Privacy()
         {
-            //Todo: changed AccessToken to IdToken
             var token = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
             if (string.IsNullOrEmpty(token))
             {
@@ -50,10 +43,5 @@ namespace HAWebUI.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
