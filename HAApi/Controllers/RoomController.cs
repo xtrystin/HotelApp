@@ -27,8 +27,6 @@ namespace HAApi.Controllers
         {
             var output = _roomData.GetRooms();
             
-            //var UserId = User.Identity.Name;
-            
             return output;
         }
 

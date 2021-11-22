@@ -2,6 +2,7 @@ using AspNet.Security.OpenIdConnect.Primitives;
 using HAApi.Library.Context;
 using HAApi.Library.DataAccess;
 using HAApi.Library.Helpers;
+using HAApi.Middleware;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -122,9 +123,15 @@ namespace HAApi
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandlingMiddleware();
+                //app.UseDeveloperExceptionPage();
+                
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HAApi v1"));
+            }
+            else
+            {
+                app.UseExceptionHandlingMiddleware();
             }
 
             app.UseHttpsRedirection();
