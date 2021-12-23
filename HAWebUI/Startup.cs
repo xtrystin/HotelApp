@@ -53,7 +53,7 @@ namespace HAWebUI
                     options.ClientId = "mvc";
                     options.ClientSecret = "901564A5-E7FE-42CB-B10D-61EF6A8F3654";
 
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = false;       //enable in production
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.SaveTokens = true;
 
@@ -61,8 +61,12 @@ namespace HAWebUI
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
 
+                    // Note: setting the Authority allows the OIDC client middleware to automatically
+                    // retrieve the identity provider's configuration and spare you from setting
+                    // the different endpoints URIs or the token validation parameters explicitly.
                     options.Authority = "https://localhost:44313/";
 
+                    // Scopes we want to get
                     options.Scope.Add("email");
                     options.Scope.Add("roles");
                     options.Scope.Add("api1");

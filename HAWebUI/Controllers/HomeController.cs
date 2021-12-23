@@ -25,7 +25,7 @@ namespace HAWebUI.Controllers
         [HttpGet("~/privacy")]
         public async Task<IActionResult> Privacy()
         {
-            var token = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
+            var token = await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken);
             if (string.IsNullOrEmpty(token))
             {
                 throw new InvalidOperationException("The access token cannot be found in the authentication ticket. " +
@@ -34,7 +34,7 @@ namespace HAWebUI.Controllers
 
             using var client = new HttpClient();
 
-            using var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/weather");
+            using var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44313/api/message");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             using var response = await client.SendAsync(request);

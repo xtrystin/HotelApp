@@ -104,7 +104,10 @@ namespace HAOpenIddictServer
                     // Register the signing and encryption credentials.
                     options.AddDevelopmentEncryptionCertificate()
                            .AddDevelopmentSigningCertificate();
-
+                    
+                    // Todo: Enable it, figure out how to decrypt token in resource server
+                    options.DisableAccessTokenEncryption();
+                   
                     // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
                     options.UseAspNetCore()
                            .EnableAuthorizationEndpointPassthrough()

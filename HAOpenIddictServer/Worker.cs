@@ -52,7 +52,7 @@ namespace HAOpenIddictServer
                         Permissions.Scopes.Email,
                         Permissions.Scopes.Profile,
                         Permissions.Scopes.Roles,
-                        Permissions.Prefixes.Scope + "demo_api",
+                        //Permissions.Prefixes.Scope + "demo_api",
                         Permissions.Prefixes.Scope + "api1"
                     },
                     Requirements =
@@ -85,6 +85,7 @@ namespace HAOpenIddictServer
                 var descriptor = new OpenIddictScopeDescriptor
                 {
                     Name = "api1",
+                    DisplayName = "API access to the resource_server_1",
                     Resources =
                     {
                         "resource_server_1"

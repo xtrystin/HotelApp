@@ -58,7 +58,7 @@ namespace HAApi
                     // Todo: Move it to appSettings
                     //Authority must be a url. It does not have a default value.
                     options.Authority = "https://localhost:44313/";
-                    options.Audience = "mvc"; //This must be included in ticket creation
+                    options.Audience = "resource_server_1"; //This must be included in ticket creation
                     options.RequireHttpsMetadata = false;
                     options.IncludeErrorDetails = true; //
                     options.TokenValidationParameters = new TokenValidationParameters()
@@ -68,18 +68,15 @@ namespace HAApi
                     };
                 });
 
-            ////Todo: Test it
-            //// adds an authorization policy to make sure the token is for scope 'api1'
             //services.AddAuthorization(options =>
             //{
-            //    options.AddPolicy("ApiScope", policy =>
-            //    {
-            //        policy.RequireAuthenticatedUser();
-            //        policy.RequireClaim("scope", "api1");
-            //    });
+            //    options.AddPolicy("Admin", 
+            //        policy => policy.RequireClaim("admin"));
+
+            //    options.AddPolicy("Cashier",
+            //        policy => policy.RequireClaim("cashier"));
+
             //});
-
-
 
             services.AddControllers();
 
@@ -144,7 +141,6 @@ namespace HAApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //Todo : Test it
                 //.RequireAuthorization("ApiScope");
             });
         }
