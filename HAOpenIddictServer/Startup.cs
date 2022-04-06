@@ -88,11 +88,12 @@ namespace HAOpenIddictServer
                 // Register the OpenIddict server components.
                 .AddServer(options =>
                 {
-                    // Enable the authorization, logout, token and userinfo endpoints.
+                    // Enable the authorization, logout, token, userinfo and introspect endpoints.
                     options.SetAuthorizationEndpointUris("/connect/authorize")
                            .SetLogoutEndpointUris("/connect/logout")
                            .SetTokenEndpointUris("/connect/token")
-                           .SetUserinfoEndpointUris("/connect/userinfo");
+                           .SetUserinfoEndpointUris("/connect/userinfo")
+                           .SetIntrospectionEndpointUris("/connect/introspect");
 
                     // Mark the "email", "profile" and "roles" scopes as supported scopes.
                     options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);

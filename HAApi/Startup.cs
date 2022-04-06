@@ -49,23 +49,27 @@ namespace HAApi
             services.AddTransient<ICheckOutData, CheckOutData>();
 
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
             //Add authentication and set default authentication scheme
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //same as "Bearer"
-                .AddJwtBearer(options =>
+            services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+            services.AddOpenIddict()
+                .AddValidation(options =>
                 {
-                    // Todo: Move it to appSettings
-                    //Authority must be a url. It does not have a default value.
-                    options.Authority = "https://localhost:44313/";
-                    options.Audience = "resource_server_1"; //This must be included in ticket creation
-                    options.RequireHttpsMetadata = false;
-                    options.IncludeErrorDetails = true; //
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        NameClaimType = OpenIdConnectConstants.Claims.Subject,
-                        RoleClaimType = OpenIdConnectConstants.Claims.Role,
-                    };
+                    // Note: the validation handler uses OpenID Connect discovery
+                    // to retrieve the address of the introspection endpoint.
+                    options.SetIssuer("https://localhost:44313/");
+                    options.AddAudiences("resource_server_1");
+
+                    // Configure the validation handler to use introspection and register the client
+                    // credentials used when communicating with the remote introspection endpoint.
+                    options.UseIntrospection()
+                           .SetClientId("resource_server_1")
+                           .SetClientSecret("RS1SecretIsSecretSoDoNotTell");
+
+                    // Register the System.Net.Http integration.
+                    options.UseSystemNetHttp();
+
+                    // Register the ASP.NET Core host.
+                    options.UseAspNetCore();
                 });
 
             //services.AddAuthorization(options =>
