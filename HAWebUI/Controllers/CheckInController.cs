@@ -45,16 +45,14 @@ namespace HAWebUI.Controllers
             displayCheckInInfo.CashierId = User.Identity.Name;
             displayCheckInInfo.CheckInDate = DateTime.Now;
 
-            var token = await GetToken();
-
             //  Check room status, capacity
-            await EnsureRoomAvailability(token, displayCheckInInfo.RoomId, (displayCheckInInfo.StudentsAmount + displayCheckInInfo.AdultsAmount));
+            await EnsureRoomAvailability(displayCheckInInfo.RoomId, (displayCheckInInfo.StudentsAmount + displayCheckInInfo.AdultsAmount));
                
             // Map displayModel to api model
             var apiCheckInInfo = MyMapper.MapDisplayModelToApiCheckInModel(displayCheckInInfo);
 
             // Send to api & get payment calculations
-            var paymentInfo = await _checkInEndpoint.PostCheckInInfo(token, apiCheckInInfo);
+            var paymentInfo = await _checkInEndpoint.PostCheckInInfo(apiCheckInInfo);
 
             // Display paymentInfo on Summary Page
             return View("Summary", paymentInfo);
@@ -63,22 +61,19 @@ namespace HAWebUI.Controllers
         [Authorize(Roles = "Cashier,Admin")]
         public async Task<ActionResult> Cancel()
         {
-            var token = await GetToken();
             var cashierId = User.Identity.Name;
 
             // Remove created CheckIn record from DB
-            await _checkInEndpoint.DeleteLastCheckInCashierMade(token, cashierId);
+            await _checkInEndpoint.DeleteLastCheckInCashierMade(cashierId);
 
             // Todo: Inform user about successful result
             return Redirect("~/home");
         }
 
 
-        private async Task<string> GetToken() => await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken);
-
-        private async Task EnsureRoomAvailability(string token, int roomId, int peopleAmount)
+        private async Task EnsureRoomAvailability(int roomId, int peopleAmount)
         {
-            var selectedRoom = await _roomEndpoint.GetRoomById(token, roomId);
+            var selectedRoom = await _roomEndpoint.GetRoomById(roomId);
             if (selectedRoom.Status != "empty" || peopleAmount > selectedRoom.Capacity)
             {
                 throw new Exception("Room is not available (room is not empty or is too small)");

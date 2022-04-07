@@ -10,19 +10,16 @@ namespace HaWebUI.Library.ApiHelpers
 {
     public class CheckOutEndpoint : ICheckOutEndpoint
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiHelper _apiHelper;
 
-        public CheckOutEndpoint(IHttpClientFactory httpClientFactory)
+        public CheckOutEndpoint(IApiHelper apiHelper)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiHelper = apiHelper;
         }
 
-        public async Task PostCheckOutInfo(string token, CheckOutModel checkOutInfo)
+        public async Task PostCheckOutInfo(CheckOutModel checkOutInfo)
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            using var response = await client.PostAsJsonAsync("api/checkout", checkOutInfo);
+            using var response = await _apiHelper.ApiClient.PostAsJsonAsync("api/checkout", checkOutInfo);
 
             if (response.IsSuccessStatusCode)
             {

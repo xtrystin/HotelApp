@@ -28,9 +28,7 @@ namespace HAWebUI.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var token = await GetToken();
-
-            List<RoomModel> apiRooms = await _roomEndpoint.GetAll(token);
+            List<RoomModel> apiRooms = await _roomEndpoint.GetAll();
 
             //  Map rooms to RoomDisplayModel
             List<RoomDisplayModel> displayRooms = MyMapper.MapApiRoomModelToDisplayModel(apiRooms);
@@ -51,11 +49,9 @@ namespace HAWebUI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(RoomDisplayModel displayRoom)
         {
-            var token = await GetToken();
-
             var apiRoom = MyMapper.MapDisplayModelToApiRoomModel(displayRoom);
 
-            await _roomEndpoint.CreateRoom(token, apiRoom);
+            await _roomEndpoint.CreateRoom(apiRoom);
 
             return Redirect("~/room");
         }
@@ -64,10 +60,7 @@ namespace HAWebUI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
-            // Get Room by id from db
-            var token = await GetToken();
-
-            RoomModel apiRoom = await _roomEndpoint.GetRoomById(token, id);
+            RoomModel apiRoom = await _roomEndpoint.GetRoomById(id);
 
             // Map room to DisplayModel
             var displayRoom = MyMapper.MapApiRoomModelToDisplayModel(apiRoom);
@@ -79,11 +72,9 @@ namespace HAWebUI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(RoomDisplayModel displayRoom)
         {
-            var token = await GetToken();
-
             var apiRoom = MyMapper.MapDisplayModelToApiRoomModel(displayRoom);
 
-            await _roomEndpoint.UpdateRoom(token, apiRoom);
+            await _roomEndpoint.UpdateRoom(apiRoom);
 
             return Redirect("~/room");
         }
@@ -101,10 +92,7 @@ namespace HAWebUI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            // Get Room by id from db
-            var token = await GetToken();
-
-            RoomModel apiRoom = await _roomEndpoint.GetRoomById(token, id);
+            RoomModel apiRoom = await _roomEndpoint.GetRoomById(id);
 
             // Map room to DisplayModel
             var displayRoom = MyMapper.MapApiRoomModelToDisplayModel(apiRoom);
@@ -116,16 +104,11 @@ namespace HAWebUI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(RoomDisplayModel displayRoom)
         {
-            var token = await GetToken();
-
             var id = displayRoom.Id;
 
-            await _roomEndpoint.DeleteRoom(token, id);
+            await _roomEndpoint.DeleteRoom(id);
 
             return Redirect("~/room");
         }
-
-
-        private async Task<string> GetToken() => await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken);
     }
 }

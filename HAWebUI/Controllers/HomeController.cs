@@ -12,12 +12,20 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using HAWebUI.Models;
 using HAWebUI.Helpers;
+using HaWebUI.Library.ApiHelpers;
 
 namespace HAWebUI.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IApiHelper _apiHelper;
+
+        public HomeController(IApiHelper apiHelper)
+        {
+            _apiHelper = apiHelper;
+        }
+
+        public async Task <IActionResult> Index()
         {
             return View();
         }

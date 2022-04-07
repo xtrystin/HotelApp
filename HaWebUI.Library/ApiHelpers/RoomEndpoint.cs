@@ -12,21 +12,18 @@ namespace HaWebUI.Library.ApiHelpers
 {
     public class RoomEndpoint : IRoomEndpoint
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiHelper _apiHelper;
 
-        public RoomEndpoint(IHttpClientFactory httpClientFactory)
+        public RoomEndpoint(IApiHelper apiHelper)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiHelper = apiHelper;
         }
 
-        public async Task<List<RoomModel>> GetAll(string token)
+        public async Task<List<RoomModel>> GetAll()
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-
             using var request = new HttpRequestMessage(HttpMethod.Get, "api/room");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            using var response = await client.SendAsync(request);
+            using var response = await _apiHelper.ApiClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 //var result = JsonSerializer.DeserializeAsync<List<RoomModel>>(await response.Content.ReadAsStreamAsync()).Result;
@@ -40,12 +37,10 @@ namespace HaWebUI.Library.ApiHelpers
             }
         }
 
-        public async Task<RoomModel> GetRoomById(string token, int id)
+        public async Task<RoomModel> GetRoomById(int id)
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            using var response = await client.GetAsync($"api/room/{id}");
+            using var response = await _apiHelper.ApiClient.GetAsync($"api/room/{id}");
+            
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsAsync<RoomModel>();
@@ -58,12 +53,10 @@ namespace HaWebUI.Library.ApiHelpers
             }
         }
 
-        public async Task CreateRoom(string token, RoomModel room)
+        public async Task CreateRoom(RoomModel room)
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            using var response = await client.PostAsJsonAsync("api/room", room);
+            using var response = await _apiHelper.ApiClient.PostAsJsonAsync("api/room", room);
+            
             if (response.IsSuccessStatusCode)
             {
                 // Log success
@@ -74,12 +67,10 @@ namespace HaWebUI.Library.ApiHelpers
             }
         }
 
-        public async Task UpdateRoom(string token, RoomModel room)
+        public async Task UpdateRoom(RoomModel room)
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            using var response = await client.PutAsJsonAsync("api/room", room);
+            using var response = await _apiHelper.ApiClient.PutAsJsonAsync("api/room", room);
+            
             if (response.IsSuccessStatusCode)
             {
                 // Log success
@@ -90,12 +81,10 @@ namespace HaWebUI.Library.ApiHelpers
             }
         }
 
-        public async Task DeleteRoom(string token, int id)
+        public async Task DeleteRoom(int id)
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            using var response = await client.DeleteAsync($"api/room/{id}");
+            using var response = await _apiHelper.ApiClient.DeleteAsync($"api/room/{id}");
+            
             if (response.IsSuccessStatusCode)
             {
                 // Log success

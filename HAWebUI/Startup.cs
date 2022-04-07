@@ -1,4 +1,5 @@
 using HaWebUI.Library.ApiHelpers;
+using HAWebUI.Middleware;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,7 @@ namespace HAWebUI
             services.AddTransient<ICheckInEndpoint, CheckInEndpoint>();
             services.AddTransient<ICheckOutEndpoint, CheckOutEndpoint>();
 
+            services.AddSingleton<IApiHelper, ApiHelper>();
 
             services
                 .AddAuthentication(options =>
@@ -88,7 +90,6 @@ namespace HAWebUI
                 // Todo: Move uri to appSettings
                 config.BaseAddress = new Uri("https://localhost:5001/");
                 config.DefaultRequestHeaders.Clear();
-                //config.DefaultRequestHeaders.Add(new MediaTypeWithQualityHeaderValue("appliacation/json"));
             });
         }
 
@@ -115,6 +116,8 @@ namespace HAWebUI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSettingHttpClientHeader();
 
             app.UseEndpoints(options =>
             {

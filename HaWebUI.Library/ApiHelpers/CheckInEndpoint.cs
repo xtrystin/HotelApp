@@ -10,20 +10,18 @@ namespace HaWebUI.Library.ApiHelpers
 {
     public class CheckInEndpoint : ICheckInEndpoint
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiHelper _apiHelper;
 
-        public CheckInEndpoint(IHttpClientFactory httpClientFactory)
+        public CheckInEndpoint(IApiHelper apiHelper)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiHelper = apiHelper;
         }
 
 
-        public async Task<PaymentModel> PostCheckInInfo(string token, CheckInModel checkInInfo)
+        public async Task<PaymentModel> PostCheckInInfo(CheckInModel checkInInfo)
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            using var response = await client.PostAsJsonAsync("api/checkIn", checkInInfo);
+            using var response = await _apiHelper.ApiClient.PostAsJsonAsync("api/checkIn", checkInInfo);
+            
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsAsync<PaymentModel>();
@@ -36,12 +34,10 @@ namespace HaWebUI.Library.ApiHelpers
             }
         }
 
-        public async Task DeleteLastCheckInCashierMade(string token, string cashierId)
+        public async Task DeleteLastCheckInCashierMade(string cashierId)
         {
-            var client = _httpClientFactory.CreateClient("HAApiClient");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            using var response = await client.PostAsJsonAsync($"api/checkIn/DeleteLastCheckIn", cashierId);
+            using var response = await _apiHelper.ApiClient.PostAsJsonAsync($"api/checkIn/DeleteLastCheckIn", cashierId);
+            
             if (response.IsSuccessStatusCode)
             {
                 // Log success

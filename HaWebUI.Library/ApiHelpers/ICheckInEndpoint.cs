@@ -5,7 +5,7 @@ namespace HaWebUI.Library.ApiHelpers
 {
     public interface ICheckInEndpoint
     {
-        Task<PaymentModel> PostCheckInInfo(string token, CheckInModel checkInInfo);
-        Task DeleteLastCheckInCashierMade(string token, string cashierId);
+        Task<PaymentModel> PostCheckInInfo(CheckInModel checkInInfo);
+        Task DeleteLastCheckInCashierMade(string cashierId);
     }
 }

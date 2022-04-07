@@ -5,6 +5,6 @@ namespace HaWebUI.Library.ApiHelpers
 {
     public interface ICheckOutEndpoint
     {
-        Task PostCheckOutInfo(string token, CheckOutModel checkOutInfo);
+        Task PostCheckOutInfo(CheckOutModel checkOutInfo);
     }
 }

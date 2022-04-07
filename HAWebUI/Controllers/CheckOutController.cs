@@ -42,19 +42,14 @@ namespace HAWebUI.Controllers
             displayCheckOutInfo.CashierId = User.Identity.Name;
             displayCheckOutInfo.CheckOutDate = DateTime.Now;
 
-            var token = await GetToken();
-
             // Map displayModel to api model
             var apiCheckOutInfo = MyMapper.MapDisplayModelToApiCheckOutModel(displayCheckOutInfo);
 
             // Send to api 
-            await _checkOutEndpoint.PostCheckOutInfo(token, apiCheckOutInfo);
+            await _checkOutEndpoint.PostCheckOutInfo(apiCheckOutInfo);
 
             // Todo: Display success Page
             return Redirect("~/home");
         }
-
-
-        private async Task<string> GetToken() => await HttpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken);
     }
 }
